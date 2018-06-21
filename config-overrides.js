@@ -10,6 +10,9 @@ const cssModuleRegex = /\.module\.css$/;
 /* eslint no-param-reassign: [0] */
 module.exports = function override(config, env) {
   config = injectBabelPlugin([
+    'transform-decorators-legacy',
+  ], config);
+  config = injectBabelPlugin([
     'import', { libraryName: 'antd', style: true, libraryDirectory: 'es' },
   ], config);
 
