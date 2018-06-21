@@ -12,6 +12,7 @@
   },
   "globals": {},
   "rules": {
+    "semi": ["error"],
     "camelcase": [0],
     "quotes": ["error", "single", { "allowTemplateLiterals": true }],
     "no-underscore-dangle": [0],
