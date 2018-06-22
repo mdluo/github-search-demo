@@ -10,9 +10,16 @@ const Home = Loadable({
   modules: ['home'],
 });
 
+const User = Loadable({
+  loader: () => import(/* webpackChunkName: "user" */ './users'),
+  loading: () => null,
+  modules: ['user'],
+});
+
 export default () => (
   <Switch>
     <Route exact path="/" component={Home} />
     <Route exact path="/search" component={Search} />
+    <Route exact path="/users/:login" component={User} />
   </Switch>
 );
