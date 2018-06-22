@@ -6,4 +6,5 @@ module.exports = {
   '@font-family': '"Roboto", sans-serif;',
   '@btn-height-lg': '50px',
   '@input-height-lg': '50px',
+  '@avatar-size-lg': '60px',
 };

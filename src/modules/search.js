@@ -9,45 +9,26 @@ export const FAILURE = 'search/FAILURE';
 
 // actions
 
-export const search = (query) => ({
+const searchApi = (query, nextPageUrl) => ({
+  query,
   [CALL_API]: {
     types: [REQUEST, SUCCESS, FAILURE],
-    endpoint: `/search/users?${qs.stringify({
-      q: query,
+    endpoint: nextPageUrl || `/search/users?${qs.stringify({
+      q: `${query} in:login`,
+      type: 'Users',
       per_page: PAGE_SIZE,
     })}`,
     schema: Schemas.USER_SEARCH,
   },
 });
 
-// reducer
-
-const initialState = {};
-
-export default (state = initialState, action) => {
-  switch (action.type) {
-    case REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        loaded: true,
-        error: null,
-        ...action.response,
-      };
-    case FAILURE:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.error,
-        ...action.response,
-      };
-    default:
-      return state;
+export const searchCall = (query, nextPage) => (dispatch, getState) => {
+  const {
+    nextPageUrl,
+    pageCount = 0,
+  } = getState().pagination.search[query] || {};
+  if (pageCount > 0 && !nextPage) {
+    return null;
   }
+  return dispatch(searchApi(query, nextPageUrl));
 };

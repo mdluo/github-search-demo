@@ -11,7 +11,12 @@ const { Content } = Layout;
 
 class Page extends Component {
   back = () => {
-    this.props.history.go(-1);
+    const { history, backUrl } = this.props;
+    if (backUrl) {
+      history.push(backUrl);
+    } else {
+      history.go(-1);
+    }
   }
 
   render() {
@@ -33,7 +38,7 @@ class Page extends Component {
               ) : title
             )}
             extra={!hideTitle && (
-              <Link href="https://github.com/mdluo/pb-demo"><Icon type="link" /> GitHub</Link>
+              <Link href="https://github.com/mdluo/github-search-demo"><Icon type="link" /> GitHub</Link>
             )}
             loading={loading}
           >
@@ -50,6 +55,7 @@ Page.propTypes = {
   title: PropTypes.string,
   hideTitle: PropTypes.bool,
   backable: PropTypes.bool,
+  backUrl: PropTypes.string,
   middle: PropTypes.bool,
   maxWidth: PropTypes.number,
   bodyStyle: PropTypes.object,
@@ -61,6 +67,7 @@ Page.defaultProps = {
   title: 'GitHub Search Demo',
   hideTitle: false,
   backable: false,
+  backUrl: '/',
   maxWidth: 1000,
   middle: false,
   bodyStyle: { padding: 24 },

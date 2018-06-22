@@ -6,42 +6,19 @@ export const FAILURE = 'user/FAILURE';
 
 // actions
 
-export const get = (login) => ({
+const getUserApi = (login) => ({
+  login,
   [CALL_API]: {
     types: [REQUEST, SUCCESS, FAILURE],
-    endpoint: `/search/users/${login}`,
+    endpoint: `/users/${login}`,
     schema: Schemas.USER,
   },
 });
 
-// reducer
-
-const initialState = {};
-
-export default (state = initialState, action) => {
-  switch (action.type) {
-    case REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        loaded: true,
-        error: null,
-        ...action.response,
-      };
-    case FAILURE:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.error,
-        ...action.response,
-      };
-    default:
-      return state;
+export const getUserCall = (login, requiredFields = []) => (dispatch, getState) => {
+  const user = getState().entities.users[login];
+  if (user && requiredFields.every(key => Object.hasOwnProperty.call(user, key))) {
+    return null;
   }
+  return dispatch(getUserApi(login));
 };

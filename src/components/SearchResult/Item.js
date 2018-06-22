@@ -13,10 +13,10 @@ class Item extends PureComponent {
           avatar={<Avatar src={avatarUrl} />}
           title={
             <span>
-              {name || <LoadingBlock width={4} />} <small>@{login}</small>
+              {name === undefined ? <LoadingBlock width={4} /> : name} <small>@{login}</small>
             </span>
           }
-          description={bio || <LoadingBlock width={30} />}
+          description={bio === undefined ? <LoadingBlock width={30} /> : bio}
         />
         <div className={styles.extra}>
           <small>{publicRepos || <LoadingBlock width={3} />} repositories</small>

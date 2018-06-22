@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import merge from 'lodash/merge';
 
 import paginate from './paginate';
-import searchModule, * as searchActions from './search';
-import userModule, * as userActions from './user';
+import * as searchActions from './search';
+import * as userActions from './user';
 
 const entities = (state = { users: {}, repos: {} }, action) => {
   if (action.response && action.response.entities) {
@@ -12,10 +12,11 @@ const entities = (state = { users: {}, repos: {} }, action) => {
   return state;
 };
 
-
 const pagination = combineReducers({
   search: paginate({
-    mapActionToKey: action => action.login,
+    mapActionToKey: action => action.query,
+    mapActionToIds: action => action.response.result.items,
+    mapExtra: action => ({ totalCount: action.response.result.totalCount }),
     types: [
       searchActions.REQUEST,
       searchActions.SUCCESS,
@@ -26,7 +27,5 @@ const pagination = combineReducers({
 
 export default combineReducers({
   entities,
-  // pagination,
-  search: searchModule,
-  user: userModule,
+  pagination,
 });

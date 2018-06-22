@@ -8,15 +8,13 @@ import Page from 'layouts/Page';
 import SearchBar from 'components/SearchBar';
 import SearchResult from 'components/SearchResult';
 
-@connect(({ entities, search }) => {
-  const { result } = search;
+@connect(({ entities, pagination }, ownProps) => {
+  const { q: query } = qs.parse(ownProps.location.search, { ignoreQueryPrefix: true });
+  const result = pagination.search[query];
   if (result) {
     return {
-      ...search,
-      result: {
-        ...result,
-        items: result.items.map((item) => entities.users[item]),
-      },
+      ...result,
+      items: result.ids.map((login) => entities.users[login]),
     };
   }
   return {};
@@ -25,26 +23,25 @@ import SearchResult from 'components/SearchResult';
 })
 class Search extends Component {
   state = {
-    q: '',
+    query: '',
   };
 
   static getDerivedStateFromProps(props, state) {
-    const { q } = qs.parse(props.location.search, { ignoreQueryPrefix: true });
-    if (q !== state.q) {
-      props.search(q);
-      return { q };
+    const { q: query } = qs.parse(props.location.search, { ignoreQueryPrefix: true });
+    if (query !== state.query) {
+      props.searchCall(query);
+      return { query };
     } else {
       return null;
     }
   }
 
   render() {
-    const { q } = this.state;
-    const { loaded, result } = this.props;
+    const { query } = this.state;
     return (
       <Page backable>
-        <SearchBar value={q} />
-        <SearchResult data={result} loading={!loaded} />
+        <SearchBar value={query} />
+        <SearchResult {...this.props} query={query} />
       </Page>
     );
   }

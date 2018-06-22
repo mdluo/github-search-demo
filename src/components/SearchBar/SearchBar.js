@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Input } from 'antd';
 
+@withRouter
 class SearchBar extends PureComponent {
   render() {
     const { history, value } = this.props;
@@ -21,4 +22,4 @@ class SearchBar extends PureComponent {
   }
 }
 
-export default withRouter(SearchBar);
+export default SearchBar;
